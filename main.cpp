@@ -27,7 +27,9 @@ int main(int argc, char* argv[]) {
 		else if (argv[i] == string("-m")){
 			algorithmLab.Merge_Sort(unsortedVector);
 		}
-
+		else if (argv[i] == string("-q")){
+			algorithmLab.Quick_Sort(unsortedVector);
+		}
 		else
 			cout << "Please enter a valid command" << '\n';
 	}
@@ -39,7 +41,7 @@ void AlgorithmLab::WriteToFile(std::vector<int> myVector)
 {
 	ofstream myFile("sorted.txt");
 
-	for (int j = 0; j < myVector.size(); j++)
+	for (int j = 0; j < (int)myVector.size(); j++)
 	{
 		myFile << myVector[j] << '\n';
 	}
@@ -53,7 +55,7 @@ void AlgorithmLab::Insertsort(std::vector<int> unsortedVector)
 	if (!unsortedVector.empty())
 	{
 		int item = 0; int steps = 0;
-		for (int i = 0; i < unsortedVector.size(); i++)
+		for (int i = 0; i < (int)unsortedVector.size(); i++)
 		{
 			item = unsortedVector[i];
 			steps = i - 1;
@@ -111,7 +113,7 @@ std::vector<int> AlgorithmLab::openFile(char* file)
 
 bool AlgorithmLab::FindDuplicatesInVector(std::string line, std::vector<int> unsortedvector)
 {
-	for (int i = 0; i < unsortedvector.size(); i++)
+	for (int i = 0; i < (int)unsortedvector.size(); i++)
 	{
 		if (unsortedvector[i] == atoi(line.c_str()))
 			return true;
@@ -166,17 +168,52 @@ std::vector<int> AlgorithmLab::Merge_Sort(std::vector<int> unsortedVector)
 
 	std::vector<int> left; std::vector<int> right;
 
-	int middle = floor(unsortedVector.size() / 2);	
+	int middle = (int)floor(unsortedVector.size() / 2);
 
 	for (int x = 0; x < middle; x++) {		
 		left.push_back(unsortedVector[x]);
 	}										
 
-	for (int x = middle; x < unsortedVector.size(); x++) {
+	for (int x = middle; x < (int)unsortedVector.size(); x++) {
 		right.push_back(unsortedVector[x]);
 	}
 
 	left = Merge_Sort(left);			
 	right = Merge_Sort(right);
 	return MergeHalfs(left, right);
+}
+
+std::vector<int> AlgorithmLab::Quick_Sort(std::vector<int> unsortedVector)
+{
+	if (unsortedVector.size() <= 1)							// stop when the array is split into single items
+
+	{
+		return unsortedVector;
+	}
+
+	int pivot = unsortedVector.back();						// select the last value of the array and use it as the pivot
+	unsortedVector.pop_back();								// drop it from the array
+															// make two arrays for storage
+	std::vector<int> less; std::vector<int> more;
+
+	for (int x = 0; x < (int)unsortedVector.size(); x++)			// for each item in the array
+	{
+		if (unsortedVector[x] < pivot)						// if the current item is less than the pivot
+		{
+			less.push_back(unsortedVector[x]);				// put in less
+		}
+		else												// if the current item is greater than or equal to the pivot
+		{
+			more.push_back(unsortedVector[x]);				// put in more
+		}
+	}
+
+	less = Quick_Sort(less);								// recursively continue to sort on each side
+	more = Quick_Sort(more);
+
+	less.insert(less.end(), pivot);							// finished sorting, now concatenate. pivot goes in the middle
+	less.insert(less.end(), more.begin(), more.end());		// and then the more array goes after
+
+	WriteToFile(less);
+	return less;											// all done!
 }

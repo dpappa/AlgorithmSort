@@ -16,6 +16,7 @@ public:
 	std::vector<int> MergeHalfs(std::vector<int>left, std::vector<int> right);
 
 	std::vector<int> Merge_Sort(std::vector<int> unsortedVector);
+	std::vector<int> Quick_Sort(std::vector<int> unsortedVector);
 
 	bool m_duplicates;
 

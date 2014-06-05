@@ -185,35 +185,35 @@ std::vector<int> AlgorithmLab::Merge_Sort(std::vector<int> unsortedVector)
 
 std::vector<int> AlgorithmLab::Quick_Sort(std::vector<int> unsortedVector)
 {
-	if (unsortedVector.size() <= 1)							// stop when the array is split into single items
+	if (unsortedVector.size() <= 1)
 
 	{
 		return unsortedVector;
 	}
 
-	int pivot = unsortedVector.back();						// select the last value of the array and use it as the pivot
-	unsortedVector.pop_back();								// drop it from the array
-															// make two arrays for storage
+	int pivot = unsortedVector.back();
+	unsortedVector.pop_back();
+				
 	std::vector<int> less; std::vector<int> more;
 
-	for (int x = 0; x < (int)unsortedVector.size(); x++)			// for each item in the array
+	for (int x = 0; x < (int)unsortedVector.size(); x++)
 	{
-		if (unsortedVector[x] < pivot)						// if the current item is less than the pivot
+		if (unsortedVector[x] < pivot)
 		{
-			less.push_back(unsortedVector[x]);				// put in less
+			less.push_back(unsortedVector[x]);
 		}
-		else												// if the current item is greater than or equal to the pivot
+		else
 		{
-			more.push_back(unsortedVector[x]);				// put in more
+			more.push_back(unsortedVector[x]);
 		}
 	}
 
-	less = Quick_Sort(less);								// recursively continue to sort on each side
+	less = Quick_Sort(less);
 	more = Quick_Sort(more);
 
-	less.insert(less.end(), pivot);							// finished sorting, now concatenate. pivot goes in the middle
-	less.insert(less.end(), more.begin(), more.end());		// and then the more array goes after
+	less.insert(less.end(), pivot);
+	less.insert(less.end(), more.begin(), more.end());
 
 	WriteToFile(less);
-	return less;											// all done!
+	return less;											
 }
